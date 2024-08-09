@@ -28,11 +28,11 @@ func (obj *ItemsRepository) Add(item Item) error {
 }
 
 func (obj *ItemsRepository) SearchById(id int) (*Item, error) {
-	val, ok := obj.items[id]
+	item, ok := obj.items[id]
 	if !ok {
 		return nil, errors.New("item doesnt exists")
 	}
-	return &val, nil
+	return &item, nil
 }
 
 func (obj *ItemsRepository) Delete(id int) error {
