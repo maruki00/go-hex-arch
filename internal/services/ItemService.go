@@ -2,10 +2,10 @@ package services
 
 import (
 	domain_contructs "go-hex-arch/internal/domain/Contructs"
+	domain_dtos "go-hex-arch/internal/domain/DTOS"
 	domain_interactions "go-hex-arch/internal/domain/Interactions"
 	domain_ports "go-hex-arch/internal/domain/ports"
 	"go-hex-arch/internal/models"
-	"strings"
 )
 
 type ItemService struct {
@@ -15,10 +15,15 @@ type ItemService struct {
 
 // func NewItemService()
 
-func (s *ItemService) Add(items map[string]any) domain_contructs.ViewModel {
+func (s *ItemService) Add(dto *domain_dtos.InsertItemDTO) domain_contructs.ViewModel {
 
-	item := ItemFromMap(items)
-	res, err := s.repo.Add(item)
+	res, err := s.repo.Add(&models.Item{
+		Id:    0,
+		Name:  dto.Name,
+		No:    dto.No,
+		Qty:   dto.Qty,
+		Price: dto.Price,
+	})
 	if err != nil {
 		return s.outPort.Error(domain_interactions.ResponseModel{
 			Data: map[string]any{
@@ -61,9 +66,15 @@ func (s *ItemService) Delete(id int) domain_contructs.ViewModel {
 
 }
 
-func (s *ItemService) Update(id int, items map[string]any) domain_contructs.ViewModel {
+func (s *ItemService) Update(id int, dto domain_dtos.UpdateItemDTO) domain_contructs.ViewModel {
 
-	res, err := s.repo.Udapte(id, ItemFromMap(items))
+	res, err := s.repo.Udapte(id, &models.Item{
+		Id:    id,
+		Name:  dto.Name,
+		No:    dto.No,
+		Qty:   dto.Qty,
+		Price: dto.Price,
+	})
 	if err != nil {
 		return s.outPort.Error(domain_interactions.ResponseModel{
 			Data: map[string]any{
@@ -128,27 +139,4 @@ func (s *ItemService) SearchById(id int) domain_contructs.ViewModel {
 		},
 	})
 
-}
-
-func ItemFromMap(items map[string]any) *models.Item {
-	item := &models.Item{}
-	for key, value := range items {
-		switch strings.ToLower(key) {
-		case "id":
-			item.Id = value.(int)
-
-		case "name":
-			item.Name = value.(string)
-
-		case "no":
-			item.No = value.(int)
-
-		case "qty":
-			item.Qty = value.(int)
-
-		case "price":
-			item.Price = value.(float32)
-		}
-	}
-	return item
 }
