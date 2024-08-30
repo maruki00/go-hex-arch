@@ -23,6 +23,10 @@ func (s *ItemService) Update() *models.Item {
 
 }
 
+func (s *ItemService) Search() []*models.Item {
+
+}
+
 func (s *ItemService) SearchById() *models.Item {
 
 }
