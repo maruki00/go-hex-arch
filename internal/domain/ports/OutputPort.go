@@ -6,5 +6,6 @@ import (
 )
 
 type OutputPort interface {
-	ItemAdded(response domain_interactions.ResponseModel) domain_contructs.ViewModel
+	Success(response domain_interactions.ResponseModel) domain_contructs.ViewModel
+	Error(response domain_interactions.ResponseModel) domain_contructs.ViewModel
 }

@@ -2,6 +2,7 @@ package services
 
 import (
 	domain_contructs "go-hex-arch/internal/domain/Contructs"
+	domain_interactions "go-hex-arch/internal/domain/Interactions"
 	domain_ports "go-hex-arch/internal/domain/ports"
 	"go-hex-arch/internal/models"
 	"strings"
@@ -17,26 +18,114 @@ func (s *ItemService) Add(items map[string]any) domain_contructs.ViewModel {
 	item := ItemFromMap(items)
 	res, err := s.repo.Add(item)
 	if err != nil {
-		return s.outPort.
+		return s.outPort.Error(domain_interactions.ResponseModel{
+			Data: map[string]any{
+				"message": "Error",
+				"error":   err.Error(),
+				"data":    nil,
+			},
+		})
 	}
 
-	return nil
+	return s.outPort.Error(domain_interactions.ResponseModel{
+		Data: map[string]any{
+			"message": "Success",
+			"error":   nil,
+			"data":    res,
+		},
+	})
 }
 
 func (s *ItemService) Delete(id int) domain_contructs.ViewModel {
-	return s.repo.Delete(id)
+
+	res, err := s.repo.Delete(id)
+	if err != nil {
+		return s.outPort.Error(domain_interactions.ResponseModel{
+			Data: map[string]any{
+				"message": "Error",
+				"error":   err.Error(),
+				"data":    nil,
+			},
+		})
+	}
+
+	return s.outPort.Error(domain_interactions.ResponseModel{
+		Data: map[string]any{
+			"message": "Success",
+			"error":   nil,
+			"data":    res,
+		},
+	})
+
 }
 
 func (s *ItemService) Update(id int, items map[string]any) domain_contructs.ViewModel {
-	return s.repo.Udapte(id, ItemFromMap(items))
+
+	res, err := s.repo.Udapte(id, ItemFromMap(items))
+	if err != nil {
+		return s.outPort.Error(domain_interactions.ResponseModel{
+			Data: map[string]any{
+				"message": "Error",
+				"error":   err.Error(),
+				"data":    nil,
+			},
+		})
+	}
+
+	return s.outPort.Error(domain_interactions.ResponseModel{
+		Data: map[string]any{
+			"message": "Success",
+			"error":   nil,
+			"data":    res,
+		},
+	})
+
 }
 
-func (s *ItemService) Search() []*models.Item {
-	return nil
+func (s *ItemService) Search(key, query string) domain_contructs.ViewModel {
+
+	res, err := s.repo.Search(key, query)
+	if err != nil {
+		return s.outPort.Error(domain_interactions.ResponseModel{
+			Data: map[string]any{
+				"message": "Error",
+				"error":   err.Error(),
+				"data":    nil,
+			},
+		})
+	}
+
+	return s.outPort.Error(domain_interactions.ResponseModel{
+		Data: map[string]any{
+			"message": "Success",
+			"error":   nil,
+			"data":    res,
+		},
+	})
+
 }
 
 func (s *ItemService) SearchById(id int) domain_contructs.ViewModel {
-	return s.repo.SearchById(id)
+
+	res, err := s.repo.SearchById(id)
+	if err != nil {
+		return s.outPort.Error(domain_interactions.ResponseModel{
+			Data: map[string]any{
+				"message": "Error",
+				"error":   err.Error(),
+				"data":    nil,
+			},
+		})
+	}
+
+	return s.outPort.Error(domain_interactions.ResponseModel{
+		Data: map[string]any{
+			"message": "Success",
+			"error":   nil,
+			"data":    res,
+		},
+	})
+
 }
 
 func ItemFromMap(items map[string]any) *models.Item {
