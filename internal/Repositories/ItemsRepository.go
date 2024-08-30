@@ -1,25 +1,21 @@
 package repositories
 
-import "errors"
+import (
+	"errors"
+	"go-hex-arch/internal/models"
+)
 
-type Item struct {
-	Id    int
-	Name  string
-	No    int
-	Qty   int
-	Price float32
-}
 type ItemsRepository struct {
-	items map[int]Item
+	items map[int]models.Item
 }
 
 func RepositoryFactory() *ItemsRepository {
 	return &ItemsRepository{
-		items: make(map[int]Item, 0),
+		items: make(map[int]models.Item, 0),
 	}
 }
 
-func (obj *ItemsRepository) Add(item Item) error {
+func (obj *ItemsRepository) Add(item models.Item) error {
 	if _, ok := obj.items[item.Id]; ok {
 		return errors.New("item already exists")
 	}
@@ -27,7 +23,7 @@ func (obj *ItemsRepository) Add(item Item) error {
 	return nil
 }
 
-func (obj *ItemsRepository) SearchById(id int) (*Item, error) {
+func (obj *ItemsRepository) SearchById(id int) (*models.Item, error) {
 	item, ok := obj.items[id]
 	if !ok {
 		return nil, errors.New("item doesnt exists")
@@ -45,7 +41,7 @@ func (obj *ItemsRepository) Delete(id int) error {
 	return nil
 }
 
-func (obj *ItemsRepository) Udapte(item Item) error {
+func (obj *ItemsRepository) Udapte(item models.Item) error {
 	item, ok := obj.items[item.Id]
 	if !ok {
 		return errors.New("item doest exists")
