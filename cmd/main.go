@@ -1,18 +1,18 @@
 package main
 
 import (
+	routers "go-hex-arch/internal/router"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
 	router := gin.Default()
-
+	routers.ItemRouter(router)
 	router.Run(":3000")
 
 	// http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-
-	
 
 	// 	controller.Insert(&domain_dtos.InsertItemDTO{
 	// 		Name:  "item1",

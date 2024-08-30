@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	repositories "go-hex-arch/internal/Repositories"
