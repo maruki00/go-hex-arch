@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	domain_dtos "go-hex-arch/internal/domain/DTOS"
 	domain_ports "go-hex-arch/internal/domain/ports"
 
 	"github.com/gin-gonic/gin"
@@ -19,33 +19,82 @@ func NewItemController(inPort domain_ports.InputPort) *ItemController {
 
 func (obj *ItemController) Insert(ctx *gin.Context) {
 
+	dto := &domain_dtos.InsertItemDTO{}
+	if err := ctx.BindJSON(dto); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "invalid data",
+		})
+		return
+	}
+
 	res := obj.InputPort.Add(dto)
 
-	fmt.Println(res.GetResponse(), res.GetResponse())
+	ctx.JSON(200, gin.H{
+		"data": res.GetResponse(),
+	})
+
 }
 
 func (obj *ItemController) Update(ctx *gin.Context) {
+	dto := &domain_dtos.UpdateItemDTO{}
+	if err := ctx.BindJSON(dto); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "invalid data",
+		})
+		return
+	}
 	res := obj.InputPort.Update(dto.Id, dto)
 
-	fmt.Println(res)
+	ctx.JSON(200, gin.H{
+		"data": res.GetResponse(),
+	})
 }
 
 func (obj *ItemController) Delete(ctx *gin.Context) {
+	dto := &domain_dtos.DeleteItemDTO{}
+	if err := ctx.BindJSON(dto); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "invalid data",
+		})
+		return
+	}
 	res := obj.InputPort.Delete(dto.Id)
 
-	fmt.Println(res)
+	ctx.JSON(200, gin.H{
+		"data": res.GetResponse(),
+	})
 }
 
 func (obj *ItemController) Show(ctx *gin.Context) {
+	dto := &domain_dtos.GetItemByIdDTO{}
+	if err := ctx.BindJSON(dto); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "invalid data",
+		})
+		return
+	}
 	res := obj.InputPort.SearchById(dto.Id)
 
-	fmt.Println(res)
+	ctx.JSON(200, gin.H{
+		"data": res.GetResponse(),
+	})
 }
 
 func (obj *ItemController) Search(ctx *gin.Context) {
+
+	dto := &domain_dtos.SearchItemDTO{}
+	if err := ctx.BindJSON(dto); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": "invalid data",
+		})
+		return
+	}
+
 	res := obj.InputPort.Search(dto.Key, dto.Query)
 
-	fmt.Println(res)
+	ctx.JSON(200, gin.H{
+		"data": res.GetResponse(),
+	})
 }
 
 // func (obj *ItemController) Insert(rw http.ResponseWriter, r *http.Request) {
