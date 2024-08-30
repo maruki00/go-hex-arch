@@ -13,6 +13,8 @@ type ItemService struct {
 	outPort domain_ports.OutputPort
 }
 
+// func NewItemService()
+
 func (s *ItemService) Add(items map[string]any) domain_contructs.ViewModel {
 
 	item := ItemFromMap(items)
