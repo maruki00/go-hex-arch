@@ -16,12 +16,12 @@ func RepositoryFactory() *ItemsRepository {
 	}
 }
 
-func (obj *ItemsRepository) Add(item *models.Item) error {
+func (obj *ItemsRepository) Add(item *models.Item) (*models.Item, error) {
 	if _, ok := obj.items[item.Id]; ok {
-		return errors.New("item already exists")
+		return nil, errors.New("item already exists")
 	}
 	obj.items[item.Id] = item
-	return nil
+	return obj.items[item.Id], nil
 }
 
 func (obj *ItemsRepository) SearchById(id int) (*models.Item, error) {
@@ -32,23 +32,38 @@ func (obj *ItemsRepository) SearchById(id int) (*models.Item, error) {
 	return item, nil
 }
 
-func (obj *ItemsRepository) Delete(id int) error {
+func (obj *ItemsRepository) Delete(id int) (*models.Item, error) {
 	item, ok := obj.items[id]
 
 	if !ok {
-		return errors.New("item doesnt exists")
+		return nil, errors.New("item doesnt exists")
 	}
 	delete(obj.items, item.Id)
-	return nil
+	return item, nil
 }
 
-func (obj *ItemsRepository) Udapte(item *models.Item) (*models.Item, error) {
-	item, ok := obj.items[item.Id]
+func (obj *ItemsRepository) Udapte(id int, item *models.Item) (*models.Item, error) {
+	_, ok := obj.items[id]
 	if !ok {
 		return nil, errors.New("item doest exists")
 	}
-	obj.items[item.Id] = item
+	obj.items[id] = item
 	return obj.items[item.Id], nil
+}
+
+func (obj *ItemsRepository) Search(key, query string) ([]*models.Item, error) {
+	items := make([]*models.Item, 0)
+
+	for _, item := range obj.items {
+		val, err := getValueByKey(key, item)
+		if err != nil {
+			return nil, errors.New("column not found")
+		}
+		if val == query {
+			items = append(items, item)
+		}
+	}
+	return items, nil
 }
 
 func getValueByKey(key string, obj *models.Item) (string, error) {
@@ -71,19 +86,4 @@ func getValueByKey(key string, obj *models.Item) (string, error) {
 		return "", errors.New("key not found")
 
 	}
-}
-
-func (obj *ItemsRepository) Search(key, query string) ([]*models.Item, error) {
-	items := make([]*models.Item, 0)
-
-	for _, item := range obj.items {
-		val, err := getValueByKey(key, item)
-		if err != nil {
-			return nil, errors.New("column not found")
-		}
-		if val == query {
-			items = append(items, item)
-		}
-	}
-	return items, nil
 }
