@@ -8,11 +8,13 @@ import (
 
 type ItemsRepository struct {
 	items map[int]*models.Item
+	index int
 }
 
 func NewItemsRepository() *ItemsRepository {
 	return &ItemsRepository{
 		items: make(map[int]*models.Item, 0),
+		index: 1,
 	}
 }
 
@@ -23,10 +25,15 @@ func RepositoryFactory() *ItemsRepository {
 }
 
 func (obj *ItemsRepository) Add(item *models.Item) (*models.Item, error) {
+	fmt.Println("result : ", obj.items, item.Id)
 	if _, ok := obj.items[item.Id]; ok {
 		return nil, errors.New("item already exists")
 	}
-	obj.items[item.Id] = item
+
+	item.Id = obj.index
+
+	obj.items[obj.index] = item
+	obj.index++
 	return obj.items[item.Id], nil
 }
 

@@ -23,7 +23,7 @@ func NewItemService(repo domain_contructs.IItemRepository, outPort domain_ports.
 func (s *ItemService) Add(dto *domain_dtos.InsertItemDTO) domain_contructs.ViewModel {
 
 	res, err := s.repo.Add(&models.Item{
-		Id:    0,
+		Id:    dto.Id,
 		Name:  dto.Name,
 		No:    dto.No,
 		Qty:   dto.Qty,
