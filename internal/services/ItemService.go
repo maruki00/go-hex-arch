@@ -13,7 +13,12 @@ type ItemService struct {
 	outPort domain_ports.OutputPort
 }
 
-// func NewItemService()
+func NewItemService(repo domain_contructs.IItemRepository, outPort domain_ports.OutputPort) *ItemService {
+	return &ItemService{
+		repo:    repo,
+		outPort: outPort,
+	}
+}
 
 func (s *ItemService) Add(dto *domain_dtos.InsertItemDTO) domain_contructs.ViewModel {
 
@@ -66,7 +71,7 @@ func (s *ItemService) Delete(id int) domain_contructs.ViewModel {
 
 }
 
-func (s *ItemService) Update(id int, dto domain_dtos.UpdateItemDTO) domain_contructs.ViewModel {
+func (s *ItemService) Update(id int, dto *domain_dtos.UpdateItemDTO) domain_contructs.ViewModel {
 
 	res, err := s.repo.Udapte(id, &models.Item{
 		Id:    id,

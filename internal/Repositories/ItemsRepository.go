@@ -10,6 +10,12 @@ type ItemsRepository struct {
 	items map[int]*models.Item
 }
 
+func NewItemsRepository() *ItemsRepository {
+	return &ItemsRepository{
+		items: make(map[int]*models.Item, 0),
+	}
+}
+
 func RepositoryFactory() *ItemsRepository {
 	return &ItemsRepository{
 		items: make(map[int]*models.Item, 0),

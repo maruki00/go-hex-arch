@@ -3,10 +3,10 @@ package viewmodels
 import "encoding/json"
 
 type JsonViewModel struct {
-	data any
+	Data any
 }
 
 func (obj *JsonViewModel) GetResponse() any {
-	json.Marshal(obj.data)
-	return obj.data
+	json.Marshal(obj.Data)
+	return obj.Data
 }
