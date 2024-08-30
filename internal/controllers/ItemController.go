@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	domain_dtos "go-hex-arch/internal/domain/DTOS"
 	domain_ports "go-hex-arch/internal/domain/ports"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ItemController struct {
@@ -16,32 +17,32 @@ func NewItemController(inPort domain_ports.InputPort) *ItemController {
 	}
 }
 
-func (obj *ItemController) Insert(dto *domain_dtos.InsertItemDTO) {
+func (obj *ItemController) Insert(ctx *gin.Context) {
 
 	res := obj.InputPort.Add(dto)
 
-	fmt.Println(res)
+	fmt.Println(res.GetResponse(), res.GetResponse())
 }
 
-func (obj *ItemController) Update(dto *domain_dtos.UpdateItemDTO) {
+func (obj *ItemController) Update(ctx *gin.Context) {
 	res := obj.InputPort.Update(dto.Id, dto)
 
 	fmt.Println(res)
 }
 
-func (obj *ItemController) Delete(dto *domain_dtos.DeleteItemDTO) {
+func (obj *ItemController) Delete(ctx *gin.Context) {
 	res := obj.InputPort.Delete(dto.Id)
 
 	fmt.Println(res)
 }
 
-func (obj *ItemController) Show(dto *domain_dtos.GetItemByIdDTO) {
+func (obj *ItemController) Show(ctx *gin.Context) {
 	res := obj.InputPort.SearchById(dto.Id)
 
 	fmt.Println(res)
 }
 
-func (obj *ItemController) Search(dto *domain_dtos.SearchItemDTO) {
+func (obj *ItemController) Search(ctx *gin.Context) {
 	res := obj.InputPort.Search(dto.Key, dto.Query)
 
 	fmt.Println(res)

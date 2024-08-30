@@ -1,20 +1,28 @@
 package main
 
 import (
-	"fmt"
-	repositories "go-hex-arch/internal/Repositories"
-	presenters "go-hex-arch/internal/adapters/Presenters"
-	"go-hex-arch/internal/controllers"
-	"go-hex-arch/internal/services"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		controllers.NewItemController(&services.NewItemService(&repositories.NewItemsRepository()), &presenters.ItemPresenter{})
-	})
 
-	fmt.Println("SErver running on http://127.0.0.1:3000")
-	http.ListenAndServe(":3000", nil)
+	router := gin.Default()
+
+	router.Run(":3000")
+
+	// http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+
+	
+
+	// 	controller.Insert(&domain_dtos.InsertItemDTO{
+	// 		Name:  "item1",
+	// 		No:    1,
+	// 		Qty:   1,
+	// 		Price: 1,
+	// 	})
+	// })
+
+	// fmt.Println("SErver running on http://127.0.0.1:3000")
+	// http.ListenAndServe(":3000", nil)
 
 }
